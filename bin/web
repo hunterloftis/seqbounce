@@ -2,20 +2,34 @@
 'use strict';
 
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('database', 'username', 'password');
+const express = require('express');
+const DATABASE_URL = process.env.DATABASE_URL;
+const PORT = process.env.PORT || 3000;
 
-var User = sequelize.define('user', {
-  username: Sequelize.STRING,
-  birthday: Sequelize.DATE
+const db = new Sequelize(DATABASE_URL, {
+  logging: false,
+  dialectOptions: { ssl: true }
 });
 
-sequelize.sync().then(function() {
-  return User.create({
-    username: 'janedoe',
-    birthday: new Date(1980, 6, 20)
-  });
-}).then(function(jane) {
-  console.log(jane.get({
-    plain: true
-  }));
+const user = db.define('user', {
+  username: Sequelize.STRING
 });
+
+const app = express()
+  .set('json spaces', 2)
+  .get('/', listUsers)
+  .get('/add/:username', addUser);
+
+db.sync().then(() => {
+  app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+});
+
+function listUsers(req, res, next) {
+  user.all().then(u => res.json(u));
+}
+
+function addUser(req, res, next) {
+  let data = { username: req.params.username };
+  if (!data.username) return next(new Error('Username required'));
+  user.create(data).then(u => res.json(u));
+}

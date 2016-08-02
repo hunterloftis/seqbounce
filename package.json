@@ -7,7 +7,7 @@
     "node": "6.2.0"
   },
   "scripts": {
-    "start": "bin/web",
+    "start": "bin/start-pgbouncer-stunnel bin/web",
     "dev": "bin/web"
   },
   "keywords": [],

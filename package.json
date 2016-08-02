@@ -1,0 +1,20 @@
+{
+  "name": "seqbounce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "6.2.0"
+  },
+  "scripts": {
+    "start": "bin/start-pgbouncer-stunnel bin/web",
+    "dev": "bin/web"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "4.14.0",
+    "sequelize": "3.23.6"
+  }
+}
